@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Copy, Check, Sparkles } from 'lucide-react';
-import InteractiveChart from './InteractiveChart';
+import InteractiveRenderer from './InteractiveRenderer';
 
 function MessageList({ messages, isLoading, loadingStage }) {
   const messagesEndRef = useRef(null);
@@ -36,182 +36,25 @@ function MessageList({ messages, isLoading, loadingStage }) {
     );
   };
 
-  // 检测并提取图表数据的函数
-  const extractPlotData = (content) => {
-    // 容错处理：如果 content 不是字符串，转换为字符串
+  const extractInteractiveHtml = (content) => {
     if (typeof content !== 'string') {
-      return { plotData: null, textContent: JSON.stringify(content) };
-    }
-    
-    console.log("开始检测图表数据:", content);
-    
-    // 1. 尝试匹配 {"plotData":...} 格式
-    const plotDataRegex = /\{\s*"plotData"\s*:[\s\S]*?\}/;
-    const plotDataMatch = content.match(plotDataRegex);
-    console.log("正则匹配结果 (plotData):", plotDataMatch);
-    
-    if (plotDataMatch) {
-      try {
-        const parsed = JSON.parse(plotDataMatch[0]);
-        console.log("解析后的对象 (plotData):", parsed);
-        if (parsed.plotData && parsed.plotData.data && parsed.plotData.layout) {
-          const textContent = content.replace(plotDataMatch[0], '').trim();
-          return {
-            plotData: {
-              data: parsed.plotData.data,
-              layout: parsed.plotData.layout,
-              config: parsed.plotData.config
-            },
-            textContent
-          };
-        }
-      } catch (e) {
-        console.log("plotData 解析失败:", e);
-      }
-    }
-    
-    // 2. 尝试匹配包含 data 和 layout 的 JSON 块
-    const chartRegex = /\{[\s\S]*?"data"\s*:[\s\S]*?"layout"\s*:[\s\S]*?\}/;
-    const chartMatch = content.match(chartRegex);
-    console.log("正则匹配结果 (chart):", chartMatch);
-    
-    if (chartMatch) {
-      try {
-        const parsed = JSON.parse(chartMatch[0]);
-        console.log("解析后的对象 (chart):", parsed);
-        if (parsed.data && parsed.layout) {
-          const textContent = content.replace(chartMatch[0], '').trim();
-          return {
-            plotData: {
-              data: parsed.data,
-              layout: parsed.layout,
-              config: parsed.config
-            },
-            textContent
-          };
-        }
-      } catch (e) {
-        console.log("chart 解析失败:", e);
-      }
+      return { interactiveHtml: null, textContent: JSON.stringify(content) };
     }
 
-    // 3. 尝试直接解析整个内容为 JSON
-    try {
-      const parsed = JSON.parse(content);
-      console.log("解析后的对象 (整个内容):", parsed);
-      
-      if ((parsed.type === 'plot' || parsed.type === 'plotly') && parsed.data && parsed.layout) {
-        return {
-          plotData: {
-            data: parsed.data,
-            layout: parsed.layout,
-            config: parsed.config
-          },
-          textContent: ''
-        };
-      }
-      
-      // 4. 支持没有 type 字段但有 data 和 layout 的格式
-      if (parsed.data && parsed.layout && !parsed.type) {
-        // 自动补全 type: "plot"
-        return {
-          plotData: {
-            data: parsed.data,
-            layout: parsed.layout,
-            config: parsed.config,
-            type: "plot"
-          },
-          textContent: ''
-        };
-      }
-      
-      // 5. 检查是否具备图表特征（如包含 x, y 数组）
-      if (parsed.data && Array.isArray(parsed.data)) {
-        const hasChartFeatures = parsed.data.some(item => 
-          item.x && Array.isArray(item.x) && item.y && Array.isArray(item.y)
-        );
-        if (hasChartFeatures) {
-          return {
-            plotData: {
-              data: parsed.data,
-              layout: parsed.layout || {},
-              config: parsed.config || {},
-              type: "plot"
-            },
-            textContent: ''
-          };
-        }
-      }
-    } catch (e) {
-      console.log("直接解析失败:", e);
-      
-      // 6. 尝试查找 JSON 代码块（优先处理），支持 Windows 换行符 \r\n
-      const jsonMatch = content.match(/```json\r?\n([\s\S]*?)\r?\n```/m);
-      console.log("正则匹配结果 (json 代码块):", jsonMatch);
-      
-      if (jsonMatch) {
-        try {
-          const parsed = JSON.parse(jsonMatch[1]);
-          console.log("解析后的对象 (json 代码块):", parsed);
-          
-          if ((parsed.type === 'plot' || parsed.type === 'plotly') && parsed.data && parsed.layout) {
-            // 彻底移除 JSON 代码块和 [PLOT_DATA] 字样
-            let textContent = content.replace(jsonMatch[0], '').replace(/\[PLOT_DATA\]/g, '').trim();
-            return {
-              plotData: {
-                data: parsed.data,
-                layout: parsed.layout,
-                config: parsed.config
-              },
-              textContent
-            };
-          }
-          
-          // 支持没有 type 字段但有 data 和 layout 的格式
-          if (parsed.data && parsed.layout && !parsed.type) {
-            // 彻底移除 JSON 代码块和 [PLOT_DATA] 字样
-            let textContent = content.replace(jsonMatch[0], '').replace(/\[PLOT_DATA\]/g, '').trim();
-            return {
-              plotData: {
-                data: parsed.data,
-                layout: parsed.layout,
-                config: parsed.config,
-                type: "plot"
-              },
-              textContent
-            };
-          }
-          
-          // 检查是否具备图表特征
-          if (parsed.data && Array.isArray(parsed.data)) {
-            const hasChartFeatures = parsed.data.some(item => 
-              item.x && Array.isArray(item.x) && item.y && Array.isArray(item.y)
-            );
-            if (hasChartFeatures) {
-              // 彻底移除 JSON 代码块和 [PLOT_DATA] 字样
-              let textContent = content.replace(jsonMatch[0], '').replace(/\[PLOT_DATA\]/g, '').trim();
-              return {
-                plotData: {
-                  data: parsed.data,
-                  layout: parsed.layout || {},
-                  config: parsed.config || {},
-                  type: "plot"
-                },
-                textContent
-              };
-            }
-          }
-        } catch (e2) {
-          console.log("json 代码块解析失败:", e2);
-        }
-      }
+    console.log("开始检测交互式HTML数据:", content);
+
+    const interactiveHtmlRegex = /\[INTERACTIVE_HTML\]\s*```(?:html)?\s*([\s\S]*?)```/m;
+    const match = content.match(interactiveHtmlRegex);
+
+    if (match) {
+      const htmlCode = match[1];
+      const textContent = content.replace(match[0], '').trim();
+      console.log("提取到的HTML代码:", htmlCode);
+      return { interactiveHtml: htmlCode, textContent };
     }
-    
-    console.log("未检测到图表数据，返回原内容");
-    return {
-      plotData: null,
-      textContent: content
-    };
+
+    console.log("未检测到交互式HTML数据，返回原内容");
+    return { interactiveHtml: null, textContent: content };
   };
 
   return (
@@ -244,7 +87,7 @@ function MessageList({ messages, isLoading, loadingStage }) {
                   <Sparkles className="w-3 h-3 text-gray-400" />
                 )}
               </div>
-              
+
               {message.isLoading ? (
                 <div className="flex items-center gap-3 text-gray-400">
                   <div className="flex gap-1">
@@ -263,20 +106,20 @@ function MessageList({ messages, isLoading, loadingStage }) {
                 <>
                   <div className="prose prose-invert prose-sm max-w-none text-gray-100">
                     {(() => {
-                      const { plotData, textContent } = extractPlotData(message.content);
+                      const { interactiveHtml, textContent } = extractInteractiveHtml(message.content);
                       return (
                         <>
                           {textContent && <ReactMarkdown>{textContent}</ReactMarkdown>}
-                          {plotData && (
+                          {interactiveHtml && (
                             <div className="mt-4 animate-fade-in">
-                              <InteractiveChart plotData={plotData} />
+                              <InteractiveRenderer htmlContent={interactiveHtml} />
                             </div>
                           )}
                         </>
                       );
                     })()}
                   </div>
-                  
+
                   {message.role === 'assistant' && (
                     <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-700/50">
                       <div className="flex items-center gap-2">
