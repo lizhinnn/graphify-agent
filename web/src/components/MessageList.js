@@ -43,13 +43,23 @@ function MessageList({ messages, isLoading, loadingStage }) {
 
     console.log("开始检测交互式HTML数据:", content);
 
-    const interactiveHtmlRegex = /\[INTERACTIVE_HTML\]\s*```(?:html)?\s*([\s\S]*?)```/m;
+    const interactiveHtmlRegex = /\[INTERACTIVE_HTML\]\s*```html\n([\s\S]*?)```/m;
     const match = content.match(interactiveHtmlRegex);
 
-    if (match) {
-      const htmlCode = match[1];
+    if (match && match[1]) {
+      const htmlCode = match[1].trim();
       const textContent = content.replace(match[0], '').trim();
       console.log("提取到的HTML代码:", htmlCode);
+      return { interactiveHtml: htmlCode, textContent };
+    }
+
+    const simpleCodeBlockRegex = /```html\n([\s\S]*?)```/m;
+    const simpleMatch = content.match(simpleCodeBlockRegex);
+
+    if (simpleMatch && simpleMatch[1]) {
+      const htmlCode = simpleMatch[1].trim();
+      const textContent = content.replace(simpleMatch[0], '').trim();
+      console.log("从普通代码块提取到的HTML:", htmlCode);
       return { interactiveHtml: htmlCode, textContent };
     }
 
@@ -89,18 +99,18 @@ function MessageList({ messages, isLoading, loadingStage }) {
               </div>
 
               {message.isLoading ? (
-                <div className="flex items-center gap-3 text-gray-400">
-                  <div className="flex gap-1">
-                    <span className="w-2 h-2 bg-green-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-2 h-2 bg-green-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-2 h-2 bg-green-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                  </div>
-                  <span className="text-sm">
-                    {loadingStage === 1 && "正在启动 AI 思考引擎..."}
-                    {loadingStage === 2 && "正在调用数学工具生成坐标点..."}
-                    {loadingStage === 3 && "数据量较大，正在努力渲染图表..."}
-                    {loadingStage === 0 && "正在分析中..."}
-                  </span>
+                <div className="prose prose-invert prose-sm max-w-none text-gray-100">
+                  {(() => {
+                    // 在加载中状态，过滤掉 [INTERACTIVE_HTML] 部分，只显示纯文本
+                    let content = message.content;
+                    if (typeof content === 'string') {
+                      // 过滤掉 [INTERACTIVE_HTML] 标记及其内容
+                      content = content.replace(/\[INTERACTIVE_HTML\]\s*```html\n[\s\S]*?```/m, '').trim();
+                      // 过滤掉普通 HTML 代码块
+                      content = content.replace(/```html\n[\s\S]*?```/m, '').trim();
+                    }
+                    return <ReactMarkdown>{content}</ReactMarkdown>;
+                  })()}
                 </div>
               ) : (
                 <>

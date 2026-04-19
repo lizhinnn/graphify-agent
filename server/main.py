@@ -33,14 +33,15 @@ def read_root():
     return {"message": "Graphify Agent API"}
 
 
-@app.post("/api/chat", response_model=ChatResponse)
-def chat(request: ChatRequest):
-    """聊天接口，支持 ReAct 模式和工具调用"""
+@app.post("/api/chat")
+async def chat(request: ChatRequest):
+    """聊天接口，支持 ReAct 模式和工具调用，返回流式响应"""
     try:
-        response = agent_manager.run(request.message)
-        # 增加打印，方便观察占位符是否被替换成功
-        print(f"DEBUG: 发往前端的内容预览: {response['content'][:100]}...")
-        return ChatResponse(content=response["content"], type=response["type"])
+        # 使用流式响应
+        return StreamingResponse(
+            agent_manager.run_stream(request.message),
+            media_type="text/event-stream"
+        )
     except Exception as e:
         print(f"DEBUG: 错误信息: {str(e)}")
         raise HTTPException(status_code=500, detail=f"LLM调用失败: {str(e)}")
