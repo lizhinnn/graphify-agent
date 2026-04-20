@@ -153,7 +153,7 @@ function MessageList({ messages, isLoading, loadingStage }) {
                     })()}
                   </div>
 
-                  {message.role === 'assistant' && (
+                  {message.role === 'assistant' && (!isLoading || index < messages.length - 1) && (
                     <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-700/50">
                       <div className="flex items-center gap-2">
                         <button
@@ -174,6 +174,11 @@ function MessageList({ messages, isLoading, loadingStage }) {
                         </button>
                       </div>
                       <span className="text-xs text-gray-500 italic">回答已结束</span>
+                    </div>
+                  )}
+                  {message.role === 'assistant' && isLoading && index === messages.length - 1 && (
+                    <div className="mt-2 pt-2 flex items-center justify-center">
+                      <span className="text-xs text-gray-400 animate-pulse">正在思考...</span>
                     </div>
                   )}
                 </>
