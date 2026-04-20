@@ -20,7 +20,8 @@ class GraphifyTool(Tool):
         elif action == "query_graph":
             return self.query_graph(**kwargs)
         elif action == "get_sample_graph":
-            return self.get_sample_graph(**kwargs)
+            highlight_ids = kwargs.get("highlight_ids", None)
+            return self.get_sample_graph(highlight_ids=highlight_ids, **kwargs)
         else:
             return {"error": f"Unknown action: {action}"}
 
@@ -161,7 +162,7 @@ class GraphifyTool(Tool):
         }
         return config_map.get(ext)
 
-    def get_sample_graph(self, **kwargs) -> Dict[str, Any]:
+    def get_sample_graph(self, highlight_ids: list = None, **kwargs) -> Dict[str, Any]:
         """Get sample graph HTML from storage"""
         try:
             # Read sample graph HTML file
@@ -169,9 +170,48 @@ class GraphifyTool(Tool):
             if not graph_path.exists():
                 return {"error": "未找到图谱文件，请先构建知识图谱"}
 
+            # 处理高亮节点ID，实现模糊匹配逻辑
+            actual_highlight_ids = []
+            if highlight_ids:
+                # 尝试读取 graph.json 文件，用于根据 label 查找对应的 id
+                graph_json_path = Path("storage/graphs/graph.json")
+                if graph_json_path.exists():
+                    with open(graph_json_path, "r", encoding="utf-8") as f:
+                        graph_data = json.load(f)
+                    
+                    # 构建 label 到 id 的映射
+                    label_to_id = {}
+                    if "nodes" in graph_data:
+                        for node in graph_data["nodes"]:
+                            if "label" in node and "id" in node:
+                                label_to_id[node["label"].lower()] = node["id"]
+                    
+                    # 处理每个高亮节点
+                    for item in highlight_ids:
+                        item_lower = item.lower()
+                        # 直接匹配 id
+                        if item in [node["id"] for node in graph_data.get("nodes", [])]:
+                            actual_highlight_ids.append(item)
+                        # 模糊匹配 label
+                        else:
+                            for label, node_id in label_to_id.items():
+                                if item_lower in label:
+                                    actual_highlight_ids.append(node_id)
+                                    break
+                else:
+                    # 如果没有 graph.json 文件，直接使用传入的 ID
+                    actual_highlight_ids = highlight_ids
+            
             # Read HTML content
             with open(graph_path, "r", encoding="utf-8") as f:
                 html_content = f.read()
+
+            # 替换 window.HIGHLIGHT_NODES
+            if actual_highlight_ids:
+                html_content = html_content.replace(
+                    "window.HIGHLIGHT_NODES = [];",
+                    f"window.HIGHLIGHT_NODES = {json.dumps(actual_highlight_ids)};"
+                )
 
             # Return formatted response
             return {

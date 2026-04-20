@@ -19,7 +19,11 @@ SYSTEM_PROMPT = """
 4. **工具：graphify**
    - 描述：用于查询和展示本地知识图谱。
    - 动作：get_sample_graph
+   - 参数：{"action": "get_sample_graph", "highlight_ids": ["string"]}
+   - highlight_ids：要高亮显示的节点 ID 或名称数组
    - 当用户要求查看本地知识图谱、了解当前项目的知识结构或请求显示已有的图表时，必须调用 graphify 工具，其 action 为 get_sample_graph。
+   - 当你决定调用 get_sample_graph 显示图谱时，请先分析用户问题中的关键词。如果这些关键词与自动控制原理的节点（如：反馈、传递函数、稳定性、根轨迹等）相关，请在 highlight_ids 参数中包含这些节点的 ID 或名称。
+   - 先在 Thought 中思考哪些节点最相关，然后在 Action 中带上这些节点进行调用。
 
 5. **交互式 HTML 生成规则：**
    - 当生成交互式可视化时，你必须在最终回答中直接包含完整的 HTML/JS/CSS 代码。
