@@ -67,6 +67,32 @@ function MessageList({ messages, isLoading, loadingStage }) {
     return { interactiveHtml: null, textContent: content };
   };
 
+  const getCleanDisplayContent = (content) => {
+    if (typeof content !== 'string') {
+      return JSON.stringify(content);
+    }
+
+    // 检测 [INTERACTIVE_HTML] 标记
+    const interactiveHtmlStart = content.indexOf('[INTERACTIVE_HTML]');
+    
+    // 检测可能的半截标记
+    const partialInteractiveHtmlStart = content.indexOf('[INTERACTIVE');
+    
+    if (interactiveHtmlStart !== -1) {
+      // 截取标记之前的文本
+      const cleanContent = content.substring(0, interactiveHtmlStart).trim();
+      // 添加占位提示
+      return cleanContent + '\n\n> 📊 **图谱生成中...**';
+    } else if (partialInteractiveHtmlStart !== -1) {
+      // 处理半截标记的情况
+      const cleanContent = content.substring(0, partialInteractiveHtmlStart).trim();
+      return cleanContent + '\n\n> 📊 **图谱生成中...**';
+    }
+
+    // 没有检测到标记，返回原始文本
+    return content;
+  };
+
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="max-w-3xl mx-auto py-6 px-4">
@@ -101,25 +127,22 @@ function MessageList({ messages, isLoading, loadingStage }) {
               {message.isLoading ? (
                 <div className="prose prose-invert prose-sm max-w-none text-gray-100">
                   {(() => {
-                    // 在加载中状态，过滤掉 [INTERACTIVE_HTML] 部分，只显示纯文本
-                    let content = message.content;
-                    if (typeof content === 'string') {
-                      // 过滤掉 [INTERACTIVE_HTML] 标记及其内容
-                      content = content.replace(/\[INTERACTIVE_HTML\]\s*```html\n[\s\S]*?```/m, '').trim();
-                      // 过滤掉普通 HTML 代码块
-                      content = content.replace(/```html\n[\s\S]*?```/m, '').trim();
-                    }
-                    return <ReactMarkdown>{content}</ReactMarkdown>;
+                    // 在加载中状态，使用 getCleanDisplayContent 过滤内容
+                    const cleanContent = getCleanDisplayContent(message.content);
+                    return <ReactMarkdown>{cleanContent}</ReactMarkdown>;
                   })()}
                 </div>
               ) : (
                 <>
                   <div className="prose prose-invert prose-sm max-w-none text-gray-100">
                     {(() => {
-                      const { interactiveHtml, textContent } = extractInteractiveHtml(message.content);
+                      // 对于已完成的消息，仍然使用 extractInteractiveHtml 提取内容
+                      // 但在显示文本时使用 getCleanDisplayContent 过滤
+                      const { interactiveHtml } = extractInteractiveHtml(message.content);
+                      const cleanContent = getCleanDisplayContent(message.content);
                       return (
                         <>
-                          {textContent && <ReactMarkdown>{textContent}</ReactMarkdown>}
+                          {cleanContent && <ReactMarkdown>{cleanContent}</ReactMarkdown>}
                           {interactiveHtml && (
                             <div className="mt-4 animate-fade-in">
                               <InteractiveRenderer htmlContent={interactiveHtml} />

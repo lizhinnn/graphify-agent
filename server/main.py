@@ -1,11 +1,13 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
 from pydantic import BaseModel
 from typing import Union, Dict
 from server.config import settings
 from agent.manager import agent_manager
 import json
+import os
+from pathlib import Path
 
 app = FastAPI()
 
@@ -45,3 +47,22 @@ async def chat(request: ChatRequest):
     except Exception as e:
         print(f"DEBUG: 错误信息: {str(e)}")
         raise HTTPException(status_code=500, detail=f"LLM调用失败: {str(e)}")
+
+
+@app.get("/api/graphs/{filename}")
+async def get_graph_file(filename: str):
+    """获取图谱文件"""
+    try:
+        # 构建文件路径
+        graph_path = Path("storage/graphs") / filename
+        
+        # 检查文件是否存在
+        if not graph_path.exists():
+            raise HTTPException(status_code=404, detail="File not found")
+        
+        # 返回文件
+        return FileResponse(graph_path)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error accessing graph file: {str(e)}")

@@ -1,0 +1,835 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "Modern Control Systems",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L1",
+      "file_type": "paper",
+      "id": "modern_control_systems",
+      "community": 1,
+      "norm_label": "modern control systems"
+    },
+    {
+      "label": "Control Systems",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L50",
+      "file_type": "paper",
+      "id": "control_systems",
+      "community": 2,
+      "norm_label": "control systems"
+    },
+    {
+      "label": "Feedback Control",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L100",
+      "file_type": "paper",
+      "id": "feedback_control",
+      "community": 1,
+      "norm_label": "feedback control"
+    },
+    {
+      "label": "Open Loop Control",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L75",
+      "file_type": "paper",
+      "id": "open_loop_control",
+      "community": 2,
+      "norm_label": "open loop control"
+    },
+    {
+      "label": "Closed Loop Control",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L125",
+      "file_type": "paper",
+      "id": "closed_loop_control",
+      "community": 2,
+      "norm_label": "closed loop control"
+    },
+    {
+      "label": "Transfer Functions",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L150",
+      "file_type": "paper",
+      "id": "transfer_functions",
+      "community": 0,
+      "norm_label": "transfer functions"
+    },
+    {
+      "label": "Laplace Transform",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L175",
+      "file_type": "paper",
+      "id": "laplace_transform",
+      "community": 0,
+      "norm_label": "laplace transform"
+    },
+    {
+      "label": "Frequency Response",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L200",
+      "file_type": "paper",
+      "id": "frequency_response",
+      "community": 0,
+      "norm_label": "frequency response"
+    },
+    {
+      "label": "Bode Plots",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L225",
+      "file_type": "paper",
+      "id": "bode_plots",
+      "community": 1,
+      "norm_label": "bode plots"
+    },
+    {
+      "label": "Nyquist Plot",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L250",
+      "file_type": "paper",
+      "id": "nyquist_plot",
+      "community": 0,
+      "norm_label": "nyquist plot"
+    },
+    {
+      "label": "Root Locus",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L275",
+      "file_type": "paper",
+      "id": "root_locus",
+      "community": 0,
+      "norm_label": "root locus"
+    },
+    {
+      "label": "Stability Analysis",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L300",
+      "file_type": "paper",
+      "id": "stability",
+      "community": 0,
+      "norm_label": "stability analysis"
+    },
+    {
+      "label": "Routh-Hurwitz Criterion",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L325",
+      "file_type": "paper",
+      "id": "routh_hurwitz",
+      "community": 0,
+      "norm_label": "routh-hurwitz criterion"
+    },
+    {
+      "label": "Marginal Stability",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L350",
+      "file_type": "paper",
+      "id": "marginal_stability",
+      "community": 0,
+      "norm_label": "marginal stability"
+    },
+    {
+      "label": "Relative Stability",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L375",
+      "file_type": "paper",
+      "id": "relative_stability",
+      "community": 0,
+      "norm_label": "relative stability"
+    },
+    {
+      "label": "PID Control",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L400",
+      "file_type": "paper",
+      "id": "pid_control",
+      "community": 1,
+      "norm_label": "pid control"
+    },
+    {
+      "label": "Lead Compensator",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L425",
+      "file_type": "paper",
+      "id": "lead_compensator",
+      "community": 1,
+      "norm_label": "lead compensator"
+    },
+    {
+      "label": "Lag Compensator",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L450",
+      "file_type": "paper",
+      "id": "lag_compensator",
+      "community": 1,
+      "norm_label": "lag compensator"
+    },
+    {
+      "label": "Lead-Lag Compensator",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L475",
+      "file_type": "paper",
+      "id": "lead_lag_compensator",
+      "community": 1,
+      "norm_label": "lead-lag compensator"
+    },
+    {
+      "label": "State Space Methods",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L500",
+      "file_type": "paper",
+      "id": "state_space",
+      "community": 3,
+      "norm_label": "state space methods"
+    },
+    {
+      "label": "State Feedback",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L525",
+      "file_type": "paper",
+      "id": "state_feedback",
+      "community": 3,
+      "norm_label": "state feedback"
+    },
+    {
+      "label": "Observer Design",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L550",
+      "file_type": "paper",
+      "id": "observer_design",
+      "community": 3,
+      "norm_label": "observer design"
+    },
+    {
+      "label": "Kalman Filter",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L575",
+      "file_type": "paper",
+      "id": "kalman_filter",
+      "community": 3,
+      "norm_label": "kalman filter"
+    },
+    {
+      "label": "Linear Quadratic Regulator",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L600",
+      "file_type": "paper",
+      "id": "linear_quadratic_regulator",
+      "community": 3,
+      "norm_label": "linear quadratic regulator"
+    },
+    {
+      "label": "Digital Control",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L625",
+      "file_type": "paper",
+      "id": "digital_control",
+      "community": 2,
+      "norm_label": "digital control"
+    },
+    {
+      "label": "Nonlinear Control",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L650",
+      "file_type": "paper",
+      "id": "nonlinear_control",
+      "community": 2,
+      "norm_label": "nonlinear control"
+    },
+    {
+      "label": "Adaptive Control",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L675",
+      "file_type": "paper",
+      "id": "adaptive_control",
+      "community": 2,
+      "norm_label": "adaptive control"
+    },
+    {
+      "label": "Robust Control",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L700",
+      "file_type": "paper",
+      "id": "robust_control",
+      "community": 2,
+      "norm_label": "robust control"
+    },
+    {
+      "label": "Intelligent Control",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L725",
+      "file_type": "paper",
+      "id": "intelligent_control",
+      "community": 2,
+      "norm_label": "intelligent control"
+    },
+    {
+      "label": "Process Control",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L750",
+      "file_type": "paper",
+      "id": "process_control",
+      "community": 1,
+      "norm_label": "process control"
+    },
+    {
+      "label": "Servomechanisms",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L775",
+      "file_type": "paper",
+      "id": "servomechanisms",
+      "community": 1,
+      "norm_label": "servomechanisms"
+    },
+    {
+      "label": "Robotics Control",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L800",
+      "file_type": "paper",
+      "id": "robotics_control",
+      "community": 3,
+      "norm_label": "robotics control"
+    },
+    {
+      "label": "Autonomous Vehicles",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L825",
+      "file_type": "paper",
+      "id": "autonomous_vehicles",
+      "community": 2,
+      "norm_label": "autonomous vehicles"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L50",
+      "_src": "modern_control_systems",
+      "_tgt": "control_systems",
+      "source": "modern_control_systems",
+      "target": "control_systems",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L100",
+      "_src": "modern_control_systems",
+      "_tgt": "feedback_control",
+      "source": "modern_control_systems",
+      "target": "feedback_control",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L150",
+      "_src": "modern_control_systems",
+      "_tgt": "transfer_functions",
+      "source": "modern_control_systems",
+      "target": "transfer_functions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L300",
+      "_src": "modern_control_systems",
+      "_tgt": "stability",
+      "source": "modern_control_systems",
+      "target": "stability",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L400",
+      "_src": "modern_control_systems",
+      "_tgt": "pid_control",
+      "source": "modern_control_systems",
+      "target": "pid_control",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L500",
+      "_src": "modern_control_systems",
+      "_tgt": "state_space",
+      "source": "modern_control_systems",
+      "target": "state_space",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L625",
+      "_src": "modern_control_systems",
+      "_tgt": "digital_control",
+      "source": "modern_control_systems",
+      "target": "digital_control",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L650",
+      "_src": "modern_control_systems",
+      "_tgt": "nonlinear_control",
+      "source": "modern_control_systems",
+      "target": "nonlinear_control",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L750",
+      "_src": "modern_control_systems",
+      "_tgt": "process_control",
+      "source": "modern_control_systems",
+      "target": "process_control",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "includes",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L75",
+      "_src": "control_systems",
+      "_tgt": "open_loop_control",
+      "source": "control_systems",
+      "target": "open_loop_control",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "includes",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L125",
+      "_src": "control_systems",
+      "_tgt": "closed_loop_control",
+      "source": "control_systems",
+      "target": "closed_loop_control",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "describes",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L500",
+      "_src": "state_space",
+      "_tgt": "control_systems",
+      "source": "control_systems",
+      "target": "state_space",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "extends",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L625",
+      "_src": "digital_control",
+      "_tgt": "control_systems",
+      "source": "control_systems",
+      "target": "digital_control",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "extends",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L650",
+      "_src": "nonlinear_control",
+      "_tgt": "control_systems",
+      "source": "control_systems",
+      "target": "nonlinear_control",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "extends",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L675",
+      "_src": "adaptive_control",
+      "_tgt": "control_systems",
+      "source": "control_systems",
+      "target": "adaptive_control",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "extends",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L700",
+      "_src": "robust_control",
+      "_tgt": "control_systems",
+      "source": "control_systems",
+      "target": "robust_control",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "extends",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L725",
+      "_src": "intelligent_control",
+      "_tgt": "control_systems",
+      "source": "control_systems",
+      "target": "intelligent_control",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L125",
+      "_src": "feedback_control",
+      "_tgt": "closed_loop_control",
+      "source": "feedback_control",
+      "target": "closed_loop_control",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L400",
+      "_src": "pid_control",
+      "_tgt": "feedback_control",
+      "source": "feedback_control",
+      "target": "pid_control",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L425",
+      "_src": "lead_compensator",
+      "_tgt": "feedback_control",
+      "source": "feedback_control",
+      "target": "lead_compensator",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L450",
+      "_src": "lag_compensator",
+      "_tgt": "feedback_control",
+      "source": "feedback_control",
+      "target": "lag_compensator",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L475",
+      "_src": "lead_lag_compensator",
+      "_tgt": "feedback_control",
+      "source": "feedback_control",
+      "target": "lead_lag_compensator",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "applies",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L750",
+      "_src": "process_control",
+      "_tgt": "feedback_control",
+      "source": "feedback_control",
+      "target": "process_control",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "applies",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L775",
+      "_src": "servomechanisms",
+      "_tgt": "feedback_control",
+      "source": "feedback_control",
+      "target": "servomechanisms",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L175",
+      "_src": "transfer_functions",
+      "_tgt": "laplace_transform",
+      "source": "transfer_functions",
+      "target": "laplace_transform",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "extends",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L200",
+      "_src": "frequency_response",
+      "_tgt": "transfer_functions",
+      "source": "transfer_functions",
+      "target": "frequency_response",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "analyzes",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L275",
+      "_src": "root_locus",
+      "_tgt": "transfer_functions",
+      "source": "transfer_functions",
+      "target": "root_locus",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L300",
+      "_src": "stability",
+      "_tgt": "transfer_functions",
+      "source": "transfer_functions",
+      "target": "stability",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "visualizes",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L225",
+      "_src": "bode_plots",
+      "_tgt": "frequency_response",
+      "source": "frequency_response",
+      "target": "bode_plots",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "visualizes",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L250",
+      "_src": "nyquist_plot",
+      "_tgt": "frequency_response",
+      "source": "frequency_response",
+      "target": "nyquist_plot",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L425",
+      "_src": "lead_compensator",
+      "_tgt": "bode_plots",
+      "source": "bode_plots",
+      "target": "lead_compensator",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L450",
+      "_src": "lag_compensator",
+      "_tgt": "bode_plots",
+      "source": "bode_plots",
+      "target": "lag_compensator",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "analyzes",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L350",
+      "_src": "nyquist_plot",
+      "_tgt": "stability",
+      "source": "nyquist_plot",
+      "target": "stability",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "analyzes",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L350",
+      "_src": "root_locus",
+      "_tgt": "stability",
+      "source": "root_locus",
+      "target": "stability",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L325",
+      "_src": "stability",
+      "_tgt": "routh_hurwitz",
+      "source": "stability",
+      "target": "routh_hurwitz",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "includes",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L350",
+      "_src": "stability",
+      "_tgt": "marginal_stability",
+      "source": "stability",
+      "target": "marginal_stability",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "includes",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L375",
+      "_src": "stability",
+      "_tgt": "relative_stability",
+      "source": "stability",
+      "target": "relative_stability",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "analyzes",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L525",
+      "_src": "state_space",
+      "_tgt": "stability",
+      "source": "stability",
+      "target": "state_space",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "used_in",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L750",
+      "_src": "pid_control",
+      "_tgt": "process_control",
+      "source": "pid_control",
+      "target": "process_control",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L525",
+      "_src": "state_feedback",
+      "_tgt": "state_space",
+      "source": "state_space",
+      "target": "state_feedback",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L550",
+      "_src": "observer_design",
+      "_tgt": "state_space",
+      "source": "state_space",
+      "target": "observer_design",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L600",
+      "_src": "linear_quadratic_regulator",
+      "_tgt": "state_space",
+      "source": "state_space",
+      "target": "linear_quadratic_regulator",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "used_in",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L800",
+      "_src": "state_space",
+      "_tgt": "robotics_control",
+      "source": "state_space",
+      "target": "robotics_control",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "applies",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L825",
+      "_src": "autonomous_vehicles",
+      "_tgt": "state_space",
+      "source": "state_space",
+      "target": "autonomous_vehicles",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "extends",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L575",
+      "_src": "kalman_filter",
+      "_tgt": "observer_design",
+      "source": "observer_design",
+      "target": "kalman_filter",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "used_in",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L825",
+      "_src": "digital_control",
+      "_tgt": "autonomous_vehicles",
+      "source": "digital_control",
+      "target": "autonomous_vehicles",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "used_in",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L825",
+      "_src": "robust_control",
+      "_tgt": "autonomous_vehicles",
+      "source": "robust_control",
+      "target": "autonomous_vehicles",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "applies",
+      "confidence": "INFERRED",
+      "source_file": "c:\\ZHL\\Data\\researchdi\\Code\\graphify\\test_diy\\pdfs\\Modern_Control_Systems_12th_Edition_origin_fix.pdf",
+      "source_location": "L825",
+      "_src": "autonomous_vehicles",
+      "_tgt": "intelligent_control",
+      "source": "intelligent_control",
+      "target": "autonomous_vehicles",
+      "confidence_score": 0.5
+    }
+  ],
+  "hyperedges": []
+}
