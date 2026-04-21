@@ -103,6 +103,19 @@ class AgentManager:
                         if tool_name == "generate_interactive_scene":
                             # 生成纯文字的观察结果
                             observation = "Interactive scene triggered"
+                        elif tool_name == "graphify" and tool_params.get("action") == "get_sample_graph":
+                            # 检查 graphify 工具的结果
+                            if "error" in result or ("content" in result and "未找到图谱文件" in result["content"]):
+                                # 图谱文件不存在或出错，启动专业知识库模式
+                                observation = "Observation: Graph file not found. Entering professional knowledge base mode. You can now manually construct a knowledge graph using D3.js format in your Final Answer."
+                            else:
+                                # 处理提取的图谱数据
+                                if "nodes" in result and "links" in result:
+                                    # 构建包含节点和连线数据的观察结果
+                                    observation = f"Observation: {{\"type\": \"graph_data\", \"nodes\": {json.dumps(result['nodes'])}, \"links\": {json.dumps(result['links'])}, \"highlight_ids\": {json.dumps(result.get('highlight_ids', []))}}}"
+                                else:
+                                    # 兼容旧格式
+                                    observation = f"Observation: {json.dumps(result)}"
                         else:
                             # 其他工具正常处理
                             observation = f"Observation: {json.dumps(result)}"

@@ -1,6 +1,18 @@
+@import 'katex/dist/katex.min.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 隐藏 MathML 备用内容，只保留 HTML 渲染 */
+.katex-mathml {
+  display: none !important;
+}
+
+/* 优化公式在黑夜模式下的显示 */
+.katex {
+  color: inherit; /* 让公式颜色跟随文本颜色 */
+  font-size: 1.1em; /* 稍微放大一点公式，提高可读性 */
+}
 
 * {
   margin: 0;

@@ -163,22 +163,17 @@ class GraphifyTool(Tool):
         return config_map.get(ext)
 
     def get_sample_graph(self, highlight_ids: list = None, **kwargs) -> Dict[str, Any]:
-        """Get sample graph HTML from storage"""
+        """Get sample graph data from storage"""
         try:
-            # Read sample graph HTML file
-            graph_path = Path("storage/graphs/graph.html")
-            if not graph_path.exists():
-                return {"error": "未找到图谱文件，请先构建知识图谱"}
-
-            # 处理高亮节点ID，实现模糊匹配逻辑
-            actual_highlight_ids = []
-            if highlight_ids:
-                # 尝试读取 graph.json 文件，用于根据 label 查找对应的 id
-                graph_json_path = Path("storage/graphs/graph.json")
-                if graph_json_path.exists():
-                    with open(graph_json_path, "r", encoding="utf-8") as f:
-                        graph_data = json.load(f)
-                    
+            # 优先从 graph.json 文件读取数据
+            graph_json_path = Path("storage/graphs/graph.json")
+            if graph_json_path.exists():
+                with open(graph_json_path, "r", encoding="utf-8") as f:
+                    graph_data = json.load(f)
+                
+                # 处理高亮节点ID，实现模糊匹配逻辑
+                actual_highlight_ids = []
+                if highlight_ids:
                     # 构建 label 到 id 的映射
                     label_to_id = {}
                     if "nodes" in graph_data:
@@ -199,24 +194,67 @@ class GraphifyTool(Tool):
                                     actual_highlight_ids.append(node_id)
                                     break
                 else:
-                    # 如果没有 graph.json 文件，直接使用传入的 ID
-                    actual_highlight_ids = highlight_ids
-            
-            # Read HTML content
-            with open(graph_path, "r", encoding="utf-8") as f:
-                html_content = f.read()
-
-            # 替换 window.HIGHLIGHT_NODES
-            if actual_highlight_ids:
-                html_content = html_content.replace(
-                    "window.HIGHLIGHT_NODES = [];",
-                    f"window.HIGHLIGHT_NODES = {json.dumps(actual_highlight_ids)};"
-                )
-
-            # Return formatted response
-            return {
-                "type": "graph_data",
-                "content": f"[INTERACTIVE_HTML]{html_content}[/INTERACTIVE_HTML]"
-            }
+                    actual_highlight_ids = []
+                
+                # 提取 nodes 和 links 数据
+                nodes = graph_data.get("nodes", [])
+                # 处理 edges 或 links
+                links = graph_data.get("edges", [])
+                if not links:
+                    links = graph_data.get("links", [])
+                
+                # 为 nodes 添加 group 属性（如果不存在）
+                for i, node in enumerate(nodes):
+                    if "group" not in node:
+                        node["group"] = (i % 3) + 1
+                
+                # Return formatted response with raw data
+                return {
+                    "type": "graph_data",
+                    "nodes": nodes,
+                    "links": links,
+                    "highlight_ids": actual_highlight_ids
+                }
+            else:
+                # 如果没有 graph.json 文件，尝试从 HTML 文件中提取数据
+                graph_path = Path("storage/graphs/graph.html")
+                if not graph_path.exists():
+                    return {"error": "未找到图谱文件，请先构建知识图谱"}
+                
+                # 读取 HTML 内容
+                with open(graph_path, "r", encoding="utf-8") as f:
+                    html_content = f.read()
+                
+                # 尝试从 HTML 中提取 nodes 和 links 数据
+                import re
+                nodes_match = re.search(r'const nodes = \[(.*?)\];', html_content, re.DOTALL)
+                links_match = re.search(r'const links = \[(.*?)\];', html_content, re.DOTALL)
+                
+                if nodes_match and links_match:
+                    try:
+                        nodes_str = f"[{nodes_match.group(1)}]"
+                        links_str = f"[{links_match.group(1)}]"
+                        nodes = json.loads(nodes_str)
+                        links = json.loads(links_str)
+                        
+                        # 为 nodes 添加 group 属性（如果不存在）
+                        for i, node in enumerate(nodes):
+                            if "group" not in node:
+                                node["group"] = (i % 3) + 1
+                        
+                        # 处理高亮节点ID
+                        actual_highlight_ids = highlight_ids or []
+                        
+                        # Return formatted response with extracted data
+                        return {
+                            "type": "graph_data",
+                            "nodes": nodes,
+                            "links": links,
+                            "highlight_ids": actual_highlight_ids
+                        }
+                    except json.JSONDecodeError:
+                        return {"error": "无法解析图谱数据，请确保图谱文件格式正确"}
+                else:
+                    return {"error": "无法从图谱文件中提取数据，请确保图谱文件格式正确"}
         except Exception as e:
             return {"error": f"获取图谱时出错: {str(e)}"}

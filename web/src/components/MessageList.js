@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 import { Copy, Check, Sparkles } from 'lucide-react';
 import InteractiveRenderer from './InteractiveRenderer';
 
@@ -38,33 +40,43 @@ function MessageList({ messages, isLoading, loadingStage }) {
 
   const extractInteractiveHtml = (content) => {
     if (typeof content !== 'string') {
-      return { interactiveHtml: null, textContent: JSON.stringify(content) };
+      return { interactiveHtmls: [], textContent: JSON.stringify(content) };
     }
 
     console.log("开始检测交互式HTML数据:", content);
 
-    const interactiveHtmlRegex = /\[INTERACTIVE_HTML\]\s*```html\n([\s\S]*?)```/m;
-    const match = content.match(interactiveHtmlRegex);
-
-    if (match && match[1]) {
-      const htmlCode = match[1].trim();
-      const textContent = content.replace(match[0], '').trim();
-      console.log("提取到的HTML代码:", htmlCode);
-      return { interactiveHtml: htmlCode, textContent };
+    const interactiveHtmlRegex = /\[INTERACTIVE_HTML\]\s*```html\n([\s\S]*?)```/g;
+    const matches = content.matchAll(interactiveHtmlRegex);
+    
+    const interactiveHtmls = [];
+    let textContent = content;
+    
+    for (const match of matches) {
+      if (match[1]) {
+        const htmlCode = match[1].trim();
+        interactiveHtmls.push(htmlCode);
+        textContent = textContent.replace(match[0], '').trim();
+        console.log("提取到的HTML代码:", htmlCode);
+      }
     }
 
-    const simpleCodeBlockRegex = /```html\n([\s\S]*?)```/m;
-    const simpleMatch = content.match(simpleCodeBlockRegex);
-
-    if (simpleMatch && simpleMatch[1]) {
-      const htmlCode = simpleMatch[1].trim();
-      const textContent = content.replace(simpleMatch[0], '').trim();
-      console.log("从普通代码块提取到的HTML:", htmlCode);
-      return { interactiveHtml: htmlCode, textContent };
+    // 如果没有找到 [INTERACTIVE_HTML] 标记，尝试匹配普通的 HTML 代码块
+    if (interactiveHtmls.length === 0) {
+      const simpleCodeBlockRegex = /```html\n([\s\S]*?)```/g;
+      const simpleMatches = content.matchAll(simpleCodeBlockRegex);
+      
+      for (const match of simpleMatches) {
+        if (match[1]) {
+          const htmlCode = match[1].trim();
+          interactiveHtmls.push(htmlCode);
+          textContent = textContent.replace(match[0], '').trim();
+          console.log("从普通代码块提取到的HTML:", htmlCode);
+        }
+      }
     }
 
     console.log("未检测到交互式HTML数据，返回原内容");
-    return { interactiveHtml: null, textContent: content };
+    return { interactiveHtmls, textContent };
   };
 
   const getCleanDisplayContent = (content) => {
@@ -94,7 +106,7 @@ function MessageList({ messages, isLoading, loadingStage }) {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto">
+    <div id="message-container" className="flex-1 overflow-y-auto p-4 space-y-4">
       <div className="max-w-3xl mx-auto py-6 px-4">
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-gray-400">
@@ -129,7 +141,20 @@ function MessageList({ messages, isLoading, loadingStage }) {
                   {(() => {
                     // 在加载中状态，使用 getCleanDisplayContent 过滤内容
                     const cleanContent = getCleanDisplayContent(message.content);
-                    return <ReactMarkdown>{cleanContent}</ReactMarkdown>;
+                    return (
+                      <ReactMarkdown
+                        remarkPlugins={[remarkMath]}
+                        rehypePlugins={[rehypeKatex]}
+                        components={{
+                          // 确保 code 块不会误伤公式
+                          code({node, inline, className, children, ...props}) {
+                            return <code className={className} {...props}>{children}</code>
+                          }
+                        }}
+                      >
+                        {cleanContent}
+                      </ReactMarkdown>
+                    );
                   })()}
                 </div>
               ) : (
@@ -138,16 +163,29 @@ function MessageList({ messages, isLoading, loadingStage }) {
                     {(() => {
                       // 对于已完成的消息，仍然使用 extractInteractiveHtml 提取内容
                       // 但在显示文本时使用 getCleanDisplayContent 过滤
-                      const { interactiveHtml } = extractInteractiveHtml(message.content);
+                      const { interactiveHtmls } = extractInteractiveHtml(message.content);
                       const cleanContent = getCleanDisplayContent(message.content);
                       return (
                         <>
-                          {cleanContent && <ReactMarkdown>{cleanContent}</ReactMarkdown>}
-                          {interactiveHtml && (
-                            <div className="mt-4 animate-fade-in">
-                              <InteractiveRenderer htmlContent={interactiveHtml} />
-                            </div>
+                          {cleanContent && (
+                            <ReactMarkdown
+                              remarkPlugins={[remarkMath]}
+                              rehypePlugins={[rehypeKatex]}
+                              components={{
+                                // 确保 code 块不会误伤公式
+                                code({node, inline, className, children, ...props}) {
+                                  return <code className={className} {...props}>{children}</code>
+                                }
+                              }}
+                            >
+                              {cleanContent}
+                            </ReactMarkdown>
                           )}
+                          {interactiveHtmls.map((htmlContent, index) => (
+                            <div key={index} className="mt-4 mb-4 animate-fade-in">
+                              <InteractiveRenderer htmlContent={htmlContent} />
+                            </div>
+                          ))}
                         </>
                       );
                     })()}
