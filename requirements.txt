@@ -27,3 +27,4 @@ tree-sitter-julia
 tree-sitter-verilog
 graspologic
 pandas
+sqlmodel

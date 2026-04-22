@@ -4,8 +4,9 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { Copy, Check, Sparkles, ChevronDown } from 'lucide-react';
 import InteractiveRenderer from './InteractiveRenderer';
+import ConceptSection from './ConceptSection';
 
-function MessageList({ messages, isLoading, loadingStage }) {
+function MessageList({ messages, isLoading, loadingStage, onNextHint }) {
   const messagesEndRef = useRef(null);
   const containerRef = useRef(null);
   const [copiedId, setCopiedId] = useState(null);
@@ -71,6 +72,73 @@ function MessageList({ messages, isLoading, loadingStage }) {
     } catch (err) {
       console.error('复制失败:', err);
     }
+  };
+
+  const parseSections = (content) => {
+    if (typeof content !== 'string') {
+      return [{ type: 'text', content: JSON.stringify(content) }];
+    }
+
+    const sections = [];
+    let lastIndex = 0;
+    
+    // 匹配完整的章节块 [SECTION_START: title] ... [SECTION_END]
+    const sectionRegex = /\[SECTION_START:\s*([^\]]+)\]([\s\S]*?)\[SECTION_END\]/g;
+    let match;
+    
+    while ((match = sectionRegex.exec(content)) !== null) {
+      const startIndex = match.index;
+      
+      // 提取章节前的文本
+      if (startIndex > lastIndex) {
+        const preText = content.substring(lastIndex, startIndex).trim();
+        if (preText) {
+          sections.push({ type: 'text', content: preText });
+        }
+      }
+      
+      // 提取章节信息
+      const title = match[1].trim();
+      let sectionContent = match[2].trim();
+      let nextHint = null;
+      
+      // 提取 NEXT_HINT
+      const nextHintRegex = /\[NEXT_HINT:\s*([^\]]+)\]/;
+      const nextHintMatch = sectionContent.match(nextHintRegex);
+      if (nextHintMatch) {
+        nextHint = nextHintMatch[1].trim();
+        sectionContent = sectionContent.replace(nextHintMatch[0], '').trim();
+      }
+      
+      sections.push({
+        type: 'section',
+        title,
+        content: sectionContent,
+        nextHint
+      });
+      
+      lastIndex = startIndex + match[0].length;
+    }
+    
+    // 提取章节后的文本
+    if (lastIndex < content.length) {
+      const postText = content.substring(lastIndex).trim();
+      if (postText) {
+        sections.push({ type: 'text', content: postText });
+      }
+    }
+    
+    // 处理不完整的章节（流式输出）
+    const incompleteSectionStart = content.indexOf('[SECTION_START');
+    if (incompleteSectionStart !== -1 && !content.includes('[SECTION_END]')) {
+      // 如果内容以 [SECTION_START 开头但未闭合，仅显示已接收部分
+      const partialText = content.substring(0, incompleteSectionStart).trim();
+      if (partialText) {
+        return [{ type: 'text', content: partialText }];
+      }
+    }
+    
+    return sections.length > 0 ? sections : [{ type: 'text', content }];
   };
 
   const renderAvatar = (role) => {
@@ -212,25 +280,42 @@ function MessageList({ messages, isLoading, loadingStage }) {
                   <div className="prose prose-invert prose-sm max-w-none text-gray-100">
                     {(() => {
                       // 对于已完成的消息，仍然使用 extractInteractiveHtml 提取内容
-                      // 但在显示文本时使用 getCleanDisplayContent 过滤
                       const { interactiveHtmls } = extractInteractiveHtml(message.content);
-                      const cleanContent = getCleanDisplayContent(message.content);
+                      
+                      // 解析章节结构
+                      const sections = parseSections(message.content);
+                      
                       return (
                         <>
-                          {cleanContent && (
-                            <ReactMarkdown
-                              remarkPlugins={[remarkMath]}
-                              rehypePlugins={[rehypeKatex]}
-                              components={{
-                                // 确保 code 块不会误伤公式
-                                code({node, inline, className, children, ...props}) {
-                                  return <code className={className} {...props}>{children}</code>
-                                }
-                              }}
-                            >
-                              {cleanContent}
-                            </ReactMarkdown>
-                          )}
+                          {sections.map((section, index) => {
+                            if (section.type === 'text') {
+                              return (
+                                <ReactMarkdown
+                                  key={index}
+                                  remarkPlugins={[remarkMath]}
+                                  rehypePlugins={[rehypeKatex]}
+                                  components={{
+                                    code({node, inline, className, children, ...props}) {
+                                      return <code className={className} {...props}>{children}</code>
+                                    }
+                                  }}
+                                >
+                                  {section.content}
+                                </ReactMarkdown>
+                              );
+                            } else if (section.type === 'section') {
+                              return (
+                                <ConceptSection
+                                  key={index}
+                                  title={section.title}
+                                  content={section.content}
+                                  nextHint={section.nextHint}
+                                  onNextHint={onNextHint}
+                                />
+                              );
+                            }
+                            return null;
+                          })}
                           {interactiveHtmls.map((htmlContent, index) => (
                             <div key={index} className="mt-4 mb-4 animate-fade-in">
                               <InteractiveRenderer htmlContent={htmlContent} />

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Trash2, MessageSquare } from 'lucide-react';
 
-function Sidebar({ conversations, currentConversationId, onSelectConversation, onNewConversation }) {
+function Sidebar({ conversations, currentConversationId, onSelectConversation, onNewConversation, onDeleteConversation }) {
   return (
     <div className="w-64 bg-chatgpt-sidebar h-full flex flex-col">
       <div className="p-3">
@@ -25,7 +25,7 @@ function Sidebar({ conversations, currentConversationId, onSelectConversation, o
                 onClick={() => onSelectConversation(conv.id)}
                 className={`w-full text-left px-4 py-3 rounded-md transition-colors text-sm truncate flex items-center gap-2 ${
                   currentConversationId === conv.id
-                    ? 'bg-white/10 text-white'
+                    ? 'bg-white/10 text-white border-l-4 border-blue-500'
                     : 'text-gray-300 hover:bg-white/5'
                 }`}
               >
@@ -35,7 +35,9 @@ function Sidebar({ conversations, currentConversationId, onSelectConversation, o
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  console.log('删除对话:', conv.id);
+                  if (onDeleteConversation) {
+                    onDeleteConversation(conv.id);
+                  }
                 }}
                 className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-md bg-red-500/80 hover:bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity"
               >

@@ -1,12 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { Send, ChevronRight } from 'lucide-react';
 
-function ChatInput({ onSendMessage, onNextScene, hasNextHint, currentSceneIndex, totalScenes, nextHint }) {
+const ChatInput = forwardRef(({ onSendMessage, onNextScene, hasNextHint, currentSceneIndex, totalScenes, nextHint }, ref) => {
   const [input, setInput] = useState('');
+  const textareaRef = useRef(null);
+
+  // 暴露聚焦方法给父组件
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      textareaRef.current?.focus();
+    }
+  }));
+
+  useEffect(() => {
+    const handleQuickAction = (e) => {
+      setInput(e.detail);
+      // 快速操作时自动聚焦到输入框
+      textareaRef.current?.focus();
+    };
+    window.addEventListener('quickAction', handleQuickAction);
+    return () => window.removeEventListener('quickAction', handleQuickAction);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('handleSubmit called:', input);
     if (input.trim() && onSendMessage) {
+      console.log('onSendMessage called with:', input);
       onSendMessage(input);
       setInput('');
     }
@@ -30,6 +50,7 @@ function ChatInput({ onSendMessage, onNextScene, hasNextHint, currentSceneIndex,
       <div className="max-w-3xl mx-auto px-4 py-4">
         <form onSubmit={handleSubmit} className="relative">
           <textarea
+            ref={textareaRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -67,6 +88,8 @@ function ChatInput({ onSendMessage, onNextScene, hasNextHint, currentSceneIndex,
       </div>
     </div>
   );
-}
+});
+
+ChatInput.displayName = 'ChatInput';
 
 export default ChatInput;
