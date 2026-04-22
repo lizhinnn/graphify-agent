@@ -8,6 +8,8 @@ build/
 # Cache
 .cache/
 *.pack
+__pycache__/
+*.pyc
 
 # Environment variables
 .env
