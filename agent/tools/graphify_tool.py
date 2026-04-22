@@ -20,7 +20,7 @@ class GraphifyTool(Tool):
         elif action == "query_graph":
             return self.query_graph(**kwargs)
         elif action == "get_sample_graph":
-            highlight_ids = kwargs.get("highlight_ids", None)
+            highlight_ids = kwargs.pop("highlight_ids", None)
             return self.get_sample_graph(highlight_ids=highlight_ids, **kwargs)
         else:
             return {"error": f"Unknown action: {action}"}

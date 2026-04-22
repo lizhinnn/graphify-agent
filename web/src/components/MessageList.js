@@ -1,17 +1,67 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import { Copy, Check, Sparkles } from 'lucide-react';
+import { Copy, Check, Sparkles, ChevronDown } from 'lucide-react';
 import InteractiveRenderer from './InteractiveRenderer';
 
 function MessageList({ messages, isLoading, loadingStage }) {
   const messagesEndRef = useRef(null);
+  const containerRef = useRef(null);
   const [copiedId, setCopiedId] = useState(null);
+  const [isUserScrollingUp, setIsUserScrollingUp] = useState(false);
+  const [showScrollToBottom, setShowScrollToBottom] = useState(false);
+  const scrollThreshold = 100; // 滚动阈值
 
+  // 节流函数
+  const throttle = (func, delay) => {
+    let inThrottle;
+    return function() {
+      const args = arguments;
+      const context = this;
+      if (!inThrottle) {
+        func.apply(context, args);
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, delay);
+      }
+    };
+  };
+
+  // 滚动监听函数
+  const handleScroll = useCallback(throttle(() => {
+    const container = containerRef.current;
+    if (container) {
+      const { scrollHeight, scrollTop, clientHeight } = container;
+      // 判断用户是否向上滚动
+      const isScrollingUp = scrollHeight - scrollTop > clientHeight + scrollThreshold;
+      setIsUserScrollingUp(isScrollingUp);
+      // 判断是否显示回到底部按钮
+      setShowScrollToBottom(scrollHeight - scrollTop > clientHeight * 1.5);
+    }
+  }, 100), []);
+
+  // 监听滚动事件
   useEffect(() => {
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, [handleScroll]);
+
+  // 条件滚动到底部
+  useEffect(() => {
+    if (!isUserScrollingUp) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isUserScrollingUp]);
+
+  // 回到底部
+  const scrollToBottom = () => {
+    setIsUserScrollingUp(false);
+    setShowScrollToBottom(false);
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  };
 
   const handleCopy = async (content, messageId) => {
     try {
@@ -106,7 +156,7 @@ function MessageList({ messages, isLoading, loadingStage }) {
   };
 
   return (
-    <div id="message-container" className="flex-1 overflow-y-auto p-4 space-y-4">
+    <div id="message-container" ref={containerRef} className="flex-1 overflow-y-auto p-4 space-y-4 relative">
       <div className="max-w-3xl mx-auto py-6 px-4">
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-gray-400">
@@ -226,6 +276,17 @@ function MessageList({ messages, isLoading, loadingStage }) {
         ))}
         <div ref={messagesEndRef} />
       </div>
+
+      {/* 回到最新内容按钮 */}
+      {showScrollToBottom && (
+        <button
+          onClick={scrollToBottom}
+          className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-all z-10"
+          aria-label="回到最新内容"
+        >
+          <ChevronDown className="w-5 h-5" />
+        </button>
+      )}
     </div>
   );
 }

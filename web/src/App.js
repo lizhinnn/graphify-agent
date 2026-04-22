@@ -3,6 +3,7 @@ import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
 import MessageList from './components/MessageList';
 import ChatInput from './components/ChatInput';
+import Stage from './components/Stage';
 
 function App() {
   const [conversations, setConversations] = useState([
@@ -18,6 +19,11 @@ function App() {
       isLoading: false
     }
   ]);
+  const [currentScene, setCurrentScene] = useState(null);
+  const [currentOutline, setCurrentOutline] = useState(null);
+  const [sceneArray, setSceneArray] = useState([]);
+  const [currentSceneIndex, setCurrentSceneIndex] = useState(0);
+  const [hasNextHint, setHasNextHint] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessageId, setLoadingMessageId] = useState(null);
   const [loadingStartTime, setLoadingStartTime] = useState(null);
@@ -42,6 +48,21 @@ function App() {
     };
   }, [isLoading, loadingStartTime, loadingMessageId]);
 
+  useEffect(() => {
+    // 只处理基本的大纲提取，不再进行复杂的内容切分
+    if (messages.length > 0) {
+      const latestMessage = messages[messages.length - 1];
+      if (latestMessage.role === 'assistant' && !latestMessage.isLoading) {
+        const content = latestMessage.content;
+        
+        // 提取 Markdown 大纲
+        if (content.includes('1. ') && content.includes('\n')) {
+          setCurrentOutline(content);
+        }
+      }
+    }
+  }, [messages]);
+
   const handleNewConversation = () => {
     const newId = conversations.length + 1;
     const newConversation = { id: newId, title: `新对话 ${newId}` };
@@ -54,7 +75,36 @@ function App() {
     setCurrentConversationId(id);
   };
 
+  const handleNextScene = () => {
+    if (currentSceneIndex < sceneArray.length - 1) {
+      setCurrentSceneIndex(prev => prev + 1);
+      // 自动同步：滚动到最新状态
+      setTimeout(() => {
+        const chatContainer = document.querySelector('.flex-1.overflow-y-auto');
+        if (chatContainer) {
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+      }, 100);
+    }
+  };
+
+  const handleSceneSelect = (index) => {
+    if (index >= 0 && index < sceneArray.length) {
+      setCurrentSceneIndex(index);
+    }
+  };
+
   const handleSendMessage = async (content) => {
+    // 检查是否是步进控制指令
+    const stepCommands = ['继续', '下一步', '下一个', '下环节'];
+    const trimmedContent = content.trim();
+    
+    if (stepCommands.includes(trimmedContent) && sceneArray.length > 0) {
+      // 触发步进控制
+      handleNextScene();
+      return;
+    }
+    
     const userMessage = { id: Date.now(), role: 'user', content, isLoading: false };
     const loadingMessage = { id: Date.now() + 1, role: 'assistant', content: '', isLoading: true };
 
@@ -90,6 +140,11 @@ function App() {
       let aiResponseContent = '';
       let aiResponseId = Date.now() + 2;
       let isReceivingFinal = false;
+
+      // 跟踪当前正在生成的模块
+      let currentModuleIndex = 0;
+      let currentModuleContent = '';
+      let modules = [];
 
       while (true) {
         const { done, value } = await reader.read();
@@ -137,6 +192,12 @@ function App() {
                 isReceivingFinal = true;
                 aiResponseContent = data.content;
                 
+                // 更新当前模块的内容
+                if (modules[currentModuleIndex]) {
+                  modules[currentModuleIndex].content = aiResponseContent;
+                  setSceneArray([...modules]);
+                }
+                
                 setMessages(prev => {
                   const updated = prev.map(msg =>
                     msg.id === loadingMessage.id
@@ -145,6 +206,42 @@ function App() {
                   );
                   return updated;
                 });
+              } else if (data.type === 'section_start') {
+                // 开始新模块
+                currentModuleIndex = data.index;
+                currentModuleContent = '';
+                
+                // 更新模块列表
+                modules[currentModuleIndex] = {
+                  title: data.module,
+                  content: '',
+                  nextHint: '',
+                  isLoading: true
+                };
+                
+                // 更新 sceneArray
+                setSceneArray(modules);
+                setCurrentSceneIndex(currentModuleIndex);
+                
+                // 自动滚动到当前模块
+                setTimeout(() => {
+                  const stageElement = document.querySelector('.flex-1.flex.flex-col.bg-gray-800');
+                  if (stageElement) {
+                    stageElement.scrollTop = 0;
+                  }
+                }, 100);
+              } else if (data.type === 'section_end') {
+                // 结束当前模块
+                if (modules[currentModuleIndex]) {
+                  modules[currentModuleIndex].isLoading = false;
+                  setSceneArray([...modules]);
+                }
+              } else if (data.type === 'outline_generated') {
+                // 处理大纲生成
+                setCurrentOutline(JSON.stringify(data.outline));
+              } else if (data.type === 'all_sections_completed') {
+                // 所有模块生成完成
+                setHasNextHint(true);
               }
             } catch (e) {
               console.error('解析 SSE 数据失败:', e.message, 'Raw:', jsonStr);
@@ -188,10 +285,31 @@ function App() {
         onNewConversation={handleNewConversation}
       />
 
-      <div className="flex-1 flex flex-col">
-        <Navbar title={currentConversation?.title || '知识图谱智能体'} />
-        <MessageList messages={messages} isLoading={isLoading} loadingStage={loadingStage} />
-        <ChatInput onSendMessage={handleSendMessage} />
+      <div className="flex-1 flex">
+        {/* 左侧内容区 (60%) */}
+        <div className="w-3/5 flex flex-col border-r border-gray-700">
+          <Navbar title={currentConversation?.title || '知识图谱智能体'} />
+          <Stage 
+            content={sceneArray.length > 0 ? sceneArray[currentSceneIndex]?.content : currentScene} 
+            outline={currentOutline} 
+            sceneArray={sceneArray}
+            currentSceneIndex={currentSceneIndex}
+            onSceneSelect={handleSceneSelect}
+          />
+        </div>
+        
+        {/* 右侧交互区 (40%) */}
+        <div className="w-2/5 flex flex-col">
+          <MessageList messages={messages} isLoading={isLoading} loadingStage={loadingStage} />
+          <ChatInput 
+            onSendMessage={handleSendMessage} 
+            onNextScene={handleNextScene} 
+            hasNextHint={hasNextHint} 
+            currentSceneIndex={currentSceneIndex} 
+            totalScenes={sceneArray.length} 
+            nextHint={sceneArray[currentSceneIndex]?.nextHint} 
+          />
+        </div>
       </div>
     </div>
   );
