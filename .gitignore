@@ -8,3 +8,6 @@ build/
 # Cache
 .cache/
 *.pack
+
+# Environment variables
+.env
